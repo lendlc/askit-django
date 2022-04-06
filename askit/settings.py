@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     'rest_framework',
+    'rest_framework.authtoken',
     'askit',
     'api'
 ]
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # CORS MIDDLEWARE?
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'capstone_dev',
         'USER': 'lendl',
-        'PASSWORD': 'L3ndlc12!',
+        'PASSWORD': 'localmysql1',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -155,3 +157,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SUPERADMIN CREDENTIALS
+# username: lendl
+# password: L3ndlc12

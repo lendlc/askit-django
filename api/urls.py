@@ -3,7 +3,7 @@ from rest_framework import permissions, routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from api.views.auth import *
+from . import views
 
 app_name = 'api'
 
@@ -24,11 +24,17 @@ router = routers.DefaultRouter()
 
 
 urlpatterns = [
-    path('', include(router.urls)), #shows registered routes
+    path('', include(router.urls)),  # shows registered routes
+
+    # swagger
     re_path(r'^docs(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
-    #app routes
-    path('admin/users/', Users.as_view()),
-    path('auth/register/tutor/', RegisterTutor.as_view())
+    # admin
+    path('admin/users/', views.Users.as_view()),
+
+    # auth
+    path('auth/obtain_auth_token/', views.CustomObtainAuthToken.as_view()),
+    path('auth/login/', views.Login.as_view()),
+    path('auth/register/tutor/', views.RegisterTutor.as_view())
 ]
