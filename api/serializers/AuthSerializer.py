@@ -36,12 +36,6 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 
-class AuthSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'role')
-
-
 class RegistrationSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     middle_name = serializers.CharField(required=False)
@@ -52,8 +46,7 @@ class RegistrationSerializer(serializers.Serializer):
 
     def validate(self, data):
         if User.objects.filter(email=data['email']).exists():
-            raise serializers.ValidationError(
-                {"email": "email already in use"})
+            raise serializers.ValidationError({"email": "email already in use"})
 
         if data['role'] not in ['tutor', 'tutee']:
             raise serializers.ValidationError({"role": "invalid role"})
@@ -74,3 +67,28 @@ class RegistrationSerializer(serializers.Serializer):
             return user
 
         return user
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    new_password_2 = serializers.CharField(required=True)
+
+    def validate(self, data):
+        user = self.context['request'].user
+
+        # check if old_password is valid
+        if not user.check_password(data.get('old_password')):
+            raise serializers.ValidationError({"old_password": "invalid password"})
+
+        # check if new password matches
+        if not data.get('new_password') == data.get('new_password_2'):
+            raise serializers.ValidationError({"new_password": "new password mismatch"})
+
+        return data
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'role')

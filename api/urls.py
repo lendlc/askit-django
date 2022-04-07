@@ -36,5 +36,10 @@ urlpatterns = [
     # auth
     path('auth/obtain_auth_token/', views.CustomObtainAuthToken.as_view()),
     path('auth/login/', views.Login.as_view()),
-    path('auth/register/tutor/', views.RegisterTutor.as_view())
+    path('auth/register/', views.Register.as_view()),
+    path('auth/logout/', views.Logout.as_view()),
+    path('auth/password_change/', views.ChangePassword.as_view()),
+    # path('auth/password_forgot/) # Send Reset Token to Email
+    # path('auth/password_reset/) # Validate Send token to Email
+    # path('auth/profile')
 ]
