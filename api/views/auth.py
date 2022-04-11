@@ -1,15 +1,19 @@
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
-from api.serializers.AuthSerializer import *
-
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from api.utils import create_token
+
+from api.utils import create_token, required_field_err, send_basic_email, gen_six_digit_code
+from django.shortcuts import get_object_or_404
+from api.serializers.AuthSerializer import *
+from datetime import datetime, timedelta
 
 
-# @route    POST /auth/obtain_auth_token/
-# @desc     Get Auth Token for Protected Requests
-# @access   Public
+"""
+@route    POST /auth/obtain_auth_token/
+@desc     Get Auth Token for Protected Requests
+@access   Public
+"""
 class CustomObtainAuthToken(ObtainAuthToken):
     permission_classes = (permissions.AllowAny, )
 
@@ -24,9 +28,11 @@ class CustomObtainAuthToken(ObtainAuthToken):
         return Response(response)
 
 
-# @route    POST /auth/login
-# @desc     User Login
-# @access   Public
+"""
+@route    POST /auth/login
+@desc     User Login
+@access   Public
+"""
 class Login(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = User.objects.all()
@@ -55,9 +61,11 @@ class Login(generics.GenericAPIView):
         return Response(data=res, status=status.HTTP_200_OK)
 
 
-# @route    POST /auth/register/
-# @desc     Create a Tutor Account
-# @access   Public
+"""
+@route    POST /auth/register/
+@desc     Create a Tutor Account
+@access   Public
+"""
 class Register(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = User.objects.all()
@@ -67,13 +75,16 @@ class Register(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
 
         return Response(status=status.HTTP_201_CREATED)
 
 
-# @route    POST /auth/logout/
-# @desc     Remove Auth Token from User
-# @access   Private
+"""
+@route    POST /auth/logout/
+@desc     Remove Auth Token from User
+@access   Private
+"""
 class Logout(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -86,7 +97,11 @@ class Logout(generics.GenericAPIView):
         # could add a logger for this action
         return Response({"message": "successfully logged out"}, status=status.HTTP_200_OK)
 
-
+"""
+@route    PUT /auth/password_change/
+@desc     Change User's Password
+@access   Private
+"""
 class ChangePassword(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
@@ -101,10 +116,58 @@ class ChangePassword(generics.GenericAPIView):
 
         return Response({"message": "password updated"}, status=status.HTTP_200_OK)
 
+"""
+@route    POST /auth/password_forgot/
+@desc     Send Change Password Token to User's email
+@access   Public
+"""
+class ForgotPassword(generics.GenericAPIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def post(self, request):
+        email = request.data.get('email', None)
+        
+        if not email:
+            return required_field_err('email')
+           
+        user = get_object_or_404(User, email=email)
+        
+        user.reset_pw_exp = datetime.now() + timedelta(minutes=5)
+        user.reset_pw_code = gen_six_digit_code()
+        user.save()
+        
+        body = """Your password reset code is %s, this code is valid for 5mins. Please do not share this code with others.
+        """ % user.reset_pw_code
+        send_basic_email(title='Forgot Password', body=body, email_to=user.email)
+            
+        return Response({"msg": "email sent"}, status=status.HTTP_200_OK)
 
-# @route    GET /admin/users/
-# @desc     View All Users or by their ID
-# @access   Private
+"""
+@route    POST /auth/password_reset/
+@desc     Reset User's Password
+@access   Public
+"""
+class ResetPassword(generics.GenericAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = ResetPasswordSerializer
+    
+    def put(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        user = get_object_or_404(User, email=serializer.data.get('email'))
+        user.set_password(serializer.data.get('new_password'))
+        user.reset_pw_code = None
+        user.reset_pw_exp = None
+        user.save()
+        
+        return Response("updated", status=status.HTTP_200_OK)
+
+"""
+@route    GET /admin/users/
+@desc     View All Users or by their ID
+@access   Private
+"""
 class Users(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()

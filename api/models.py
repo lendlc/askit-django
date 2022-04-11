@@ -22,6 +22,10 @@ class User(AbstractUser):
     image = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=None)
     role = models.CharField(max_length=10, choices=ROLES)
     is_verified = models.BooleanField(default=False)
+    
+    reset_pw_code = models.CharField(default=None, blank=True, null=True, max_length=12)
+    reset_pw_exp = models.DateTimeField(default=None, blank=True, null=True) #add 5 mins to current time
+    
     objects = UserManager()
 
     def __str__(self):

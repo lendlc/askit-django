@@ -39,7 +39,7 @@ urlpatterns = [
     path('auth/register/', views.Register.as_view()),
     path('auth/logout/', views.Logout.as_view()),
     path('auth/password_change/', views.ChangePassword.as_view()),
-    # path('auth/password_forgot/) # Send Reset Token to Email
-    # path('auth/password_reset/) # Validate Send token to Email
+    path('auth/password_forgot/', views.ForgotPassword.as_view()),
+    path('auth/password_reset/', views.ResetPassword.as_view())
     # path('auth/profile')
 ]

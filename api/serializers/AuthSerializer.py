@@ -1,3 +1,5 @@
+from datetime import datetime
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from api.models import User, Tutor
 from django.contrib.auth import authenticate
@@ -87,6 +89,26 @@ class ChangePasswordSerializer(serializers.Serializer):
 
         return data
 
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    code = serializers.CharField(required=True)
+    new_password = serializers.CharField()
+    new_password_2 = serializers.CharField()
+    
+    def validate(self, data):
+        user = get_object_or_404(User, email=data.get('email', None))
+        
+        if not user.reset_pw_code and not user.reset_pw_exp:
+            raise serializers.ValidationError({'code': 'no existing code, please request a new one'})
+        elif user.reset_pw_code == data.get('code').upper():
+            raise serializers.ValidationError({'code': 'invalid code.'})
+        elif datetime.now() > user.reset_pw_exp:
+            raise serializers.ValidationError({'code': 'code expired, please request a new one.'})
+        
+        if not data.get('new_password') == data.get('new_password_2'):
+            raise serializers.ValidationError({'password': 'password mismatch.'})
+        
+        return data
 
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:

@@ -28,6 +28,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'developer.askit@gmail.com'
+EMAIL_HOST_PASSWORD = '@sKitd3v'
+EMAIL_FROM_NAME = 'Ask IT'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -145,7 +153,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -158,6 +166,13 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+####################################################
+
 # SUPERADMIN CREDENTIALS
 # username: lendl
 # password: L3ndlc12
+
+# CAPSTONE DEV EMAIL ACCOUNT
+# email: developer.askit@gmail.com
+# password: @sKitd3v
