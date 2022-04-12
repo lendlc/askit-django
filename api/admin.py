@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'password')
         }),
         (('Personal info'),
-            {'fields': ('first_name', 'last_name', 'role', 'birth_date')
+            {'fields': ('first_name', 'last_name', 'role',)
         }),
         (('Permissions'),
             {'fields': ('is_active','is_verified',)} #'is_superuser','groups', 'user_permissions'
@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserCreationForm
 
     #Fields to show in List
-    list_display = ('username', 'email','date_joined', 'role', 'is_verified', )
+    list_display = ('username', 'email','date_joined', 'role', 'last_login', 'is_verified', )
     list_filter = ('role', 'is_active', 'is_verified',)
     ordering = ('date_joined', )
 

@@ -1,8 +1,11 @@
+import base64
 from datetime import datetime
+import json
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from api.models import User, Tutor
 from django.contrib.auth import authenticate
+from django.contrib.auth.tokens import default_token_generator
 
 
 class LoginSerializer(serializers.Serializer):

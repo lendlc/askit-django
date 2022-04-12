@@ -40,6 +40,8 @@ urlpatterns = [
     path('auth/logout/', views.Logout.as_view()),
     path('auth/password_change/', views.ChangePassword.as_view()),
     path('auth/password_forgot/', views.ForgotPassword.as_view()),
-    path('auth/password_reset/', views.ResetPassword.as_view())
+    path('auth/password_reset/', views.ResetPassword.as_view()),
+    path('auth/account/send_verification/', views.SendEmailVerification.as_view()),
+    path('auth/account/verify/', views.VerifyEmailToken.as_view())
     # path('auth/profile')
 ]
