@@ -41,3 +41,24 @@ class Tutor(TimeStampedModel):
 
     def __str__(self):
         return self.user.email
+
+
+class Schedule(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_schedules')
+    subject = models.CharField(null=True, blank=True, max_length=50)
+    datetime_start = models.DateTimeField()
+    datetime_end = models.DateTimeField()
+    is_available = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return '%s @ %s to %s -- %s' % (self.datetime_start.date(), self.datetime_start.time(), self.datetime_end.time(), self.user.email)
+    
+    @property
+    def duration_in_mins(self):
+        min = (self.datetime_end - self.datetime_start) / 60
+        return int(min.total_seconds())
+    
+# class Appointment(TimeStampedModel):
+#     tutor_schedule
+#     tutee_schedule
+#     status (pending, approved, canceled) will be set to approve when tutor accepts

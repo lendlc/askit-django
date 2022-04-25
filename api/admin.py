@@ -37,3 +37,4 @@ class CustomUserAdmin(UserAdmin):
 #add models below.
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Tutor,)
+admin.site.register(Schedule)

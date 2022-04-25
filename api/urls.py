@@ -32,6 +32,7 @@ urlpatterns = [
 
     # admin
     path('admin/users/', views.Users.as_view()),
+    path('admin/schedules/', views.Schedules.as_view()),
 
     # auth
     path('auth/obtain_auth_token/', views.CustomObtainAuthToken.as_view()),
@@ -42,6 +43,10 @@ urlpatterns = [
     path('auth/password_forgot/', views.ForgotPassword.as_view()),
     path('auth/password_reset/', views.ResetPassword.as_view()),
     path('auth/account/send_verification/', views.SendEmailVerification.as_view()),
-    path('auth/account/verify/', views.VerifyEmailToken.as_view())
+    path('auth/account/verify/', views.VerifyEmailToken.as_view()),
     # path('auth/profile')
+    
+    # schedule
+    path('schedules/', views.ListCreateSchedule.as_view()),
+    path('schedules/<int:pk>/', views.GetEditDeleteSchedule.as_view())
 ]
