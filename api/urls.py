@@ -33,6 +33,7 @@ urlpatterns = [
     # admin
     path('admin/users/', views.Users.as_view()),
     path('admin/schedules/', views.Schedules.as_view()),
+    path('admin/appointments/', views.AppointmentsAdminList.as_view()),
 
     # auth
     path('auth/obtain_auth_token/', views.CustomObtainAuthToken.as_view()),
@@ -48,5 +49,10 @@ urlpatterns = [
     
     # schedule
     path('schedules/', views.ListCreateSchedule.as_view()),
-    path('schedules/<int:pk>/', views.GetEditDeleteSchedule.as_view())
+    path('schedules/<int:pk>/', views.GetEditDeleteSchedule.as_view()),
+    
+    # appointment
+    path('tutee/appointments/', views.TuteeAppointment.as_view()),
+    #  path('/tutee/appointments/<int:pk>/', views.GetEditDeleteAppointment()),
+    
 ]

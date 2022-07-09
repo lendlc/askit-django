@@ -42,6 +42,12 @@ class Tutor(TimeStampedModel):
     def __str__(self):
         return self.user.email
 
+class Tutee(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='tutee')
+
+    def __str__(self):
+        return 'uid:%s | %s' % (self.user.id, self.user.email)
+    
 
 class Schedule(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_schedules')
@@ -49,6 +55,7 @@ class Schedule(TimeStampedModel):
     datetime_start = models.DateTimeField()
     datetime_end = models.DateTimeField()
     is_available = models.BooleanField(default=True)
+    #is_archived = models.BooleanField(default=False)
     
     def __str__(self):
         return '%s @ %s to %s -- %s' % (self.datetime_start.date(), self.datetime_start.time(), self.datetime_end.time(), self.user.email)
@@ -58,7 +65,21 @@ class Schedule(TimeStampedModel):
         min = (self.datetime_end - self.datetime_start) / 60
         return int(min.total_seconds())
     
-# class Appointment(TimeStampedModel):
-#     tutor_schedule
-#     tutee_schedule
-#     status (pending, approved, canceled) will be set to approve when tutor accepts
+class Appointment(TimeStampedModel):
+    
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('declined', 'Declined'),
+        ('approved', 'Approved'),
+        ('canceled', 'Canceled')
+    )
+    
+    tutee = models.ForeignKey(Tutee, on_delete=models.CASCADE, related_name='appointment_tutee')
+    tutor_schedule = models.OneToOneField(Schedule, on_delete=models.PROTECT, related_name='appointment_tutor_schedule')
+    status = models.CharField(default='pending', choices=STATUS_CHOICES, max_length=20)
+    description = models.TextField(null=True, blank=True)
+    reason_for_cancel = models.CharField(null=True, blank=True, max_length=150)
+    is_archived = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return 'TUTEE: %s and TUTOR: %s [SCHED ID: %s]' % (self.tutee.user.email, self.tutor_schedule.user.email, self.tutor_schedule.id)

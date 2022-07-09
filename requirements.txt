@@ -3,3 +3,4 @@ djangorestframework
 mysqlclient
 Pillow
 drf-yasg
+django-light
