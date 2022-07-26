@@ -31,20 +31,14 @@ ALLOWED_HOSTS = []
 
 WEB_APP_URL = getenv('WEB_APP_URL', 'http://localhost:3000')
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_USE_TLS = True
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'developer.askit@gmail.com'
-# EMAIL_HOST_PASSWORD = '@sKitd3v'
-# EMAIL_FROM_NAME = 'Ask IT'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
-EMAIL_HOST_USER = 'john.lendl_cuyugan@questronix.com.ph'
-EMAIL_HOST_PASSWORD = 'champybEstb0i!'
-EMAIL_PORT = '587'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'developer.askit@gmail.com'
+EMAIL_HOST_PASSWORD = '@sKitd3v'
+EMAIL_FROM_NAME = 'Ask IT'
+
 
 # Application definition
 
@@ -60,7 +54,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'askit',
-    'api'
+    'api',
+    'chat',
 ]
 
 MIDDLEWARE = [

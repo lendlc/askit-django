@@ -193,7 +193,7 @@ class SendEmailVerification(generics.GenericAPIView):
             subject='Account Activation', 
             template='account_activation.html', 
             data={'url': url},  
-            email_to='cuyuganjohnlendl@gmail.com'
+            email_to='cuyuganjohnlendl@gmail.com' # TODO - make dynamic
         )
         
         return Response({"msg": "email sent", "token": token}, status=status.HTTP_200_OK)
