@@ -114,4 +114,4 @@ class ResetPasswordSerializer(serializers.Serializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'role')
+        fields = ('id', 'get_full_name', 'username', 'email', 'role', 'date_joined', 'last_login')

@@ -1,17 +1,17 @@
 import base64
 import json
+from datetime import datetime, timedelta
+
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import update_last_login
 from django.conf import settings
-from api.serializers.AuthSerializer import *
-from datetime import datetime, timedelta
 
+from api.serializers.AuthSerializer import *
 from api.utils import create_token, required_field_err, send_basic_email, gen_six_digit_code, send_html_email
 
 """
@@ -278,7 +278,7 @@ class Users(generics.ListAPIView):
     serializer_class = UserListSerializer
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().exclude(role="")
         user_id = self.request.GET.get('id', None)
         if user_id is not None:
             qs = qs.filter(id=user_id)
