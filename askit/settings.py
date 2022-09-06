@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-0@fi=n=6!%=m*mg-d_y1u$l$8c5xu+-7cp(e=0hl35yesn2d8^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*', '18.143.163.129',
-                 'ec2-18-143-163-129.ap-southeast-1.compute.amazonaws.com',]
+                 'ec2-18-143-163-129.ap-southeast-1.compute.amazonaws.com', 'https://www.askitcapstone.live']
 
 WEB_APP_URL = getenv('WEB_APP_URL', 'http://localhost:3000')
 
