@@ -31,6 +31,31 @@ class CustomObtainAuthToken(ObtainAuthToken):
             'id': user.id,
         }
         return Response(response)
+    
+
+"""
+@route    POST /auth/profile
+@desc     User Login
+@access   Private
+"""
+class Profile(generics.GenericAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def get(self, request):
+        user = request.user
+        
+        context = {
+            "id": user.id,
+            "full_name": user.get_full_name(),
+            "email": user.email,
+            "role": user.role,
+        }
+        
+        if hasattr(user, 'tutor'):
+            context['rating'] = user.tutor.rating
+            context['about_me'] = user.tutor.about_me
+        
+        return Response(context, status=200)
 
 
 """

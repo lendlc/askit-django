@@ -29,7 +29,7 @@ def send_basic_email(title, body, email_to):
     send_mail(
         title,
         body,
-        "Ask IT",
+        'no-reply@askitcapstone.live',
         [email_to],
         fail_silently=False
     )

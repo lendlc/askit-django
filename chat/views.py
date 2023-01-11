@@ -16,7 +16,7 @@ class ConvoSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         user = self.context['request'].user
 
-        data['chat_with'] = instance.tutor.user.email if user.role == 'tutee' else instance.tutee.user.email
+        data['chat_with'] = instance.tutor.user.first_name if user.role == 'tutee' else instance.tutee.user.first_name
 
         # get last chat data
         try:
@@ -79,3 +79,18 @@ class GetMessages(generics.GenericAPIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+    
+
+class SendMessage(generics.GenericAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def post(self, request):
+        
+        convo = get_object_or_404(Conversation, id=request.data.get('conversation'))
+        
+        Message.objects.create(
+            conversation=convo,
+            user=request.user,
+            message=request.data.get('message')
+        )
+        
+        return Response(status=201)

@@ -42,6 +42,7 @@ urlpatterns = [
 
    # auth
    path('auth/obtain_auth_token/', views.CustomObtainAuthToken.as_view()),
+   path('auth/profile/', views.Profile.as_view()),
    path('auth/login/', views.Login.as_view()),
    path('auth/register/', views.Register.as_view()),
    path('auth/logout/', views.Logout.as_view()),

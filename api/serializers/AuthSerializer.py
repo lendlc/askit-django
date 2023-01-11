@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from api.models import User, Tutor
+from api.models import Tutee, User, Tutor
 from django.contrib.auth import authenticate
 
 
@@ -66,8 +66,7 @@ class RegistrationSerializer(serializers.Serializer):
         if validated_data['role'] == 'tutor':
             Tutor.objects.create(user=user)
         else:
-            # TODO - Create Tutee
-            return user
+            Tutee.objects.create(user=user)
 
         return user
 

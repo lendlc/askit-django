@@ -33,12 +33,12 @@ ALLOWED_HOSTS = ['*', '18.143.163.129',
 WEB_APP_URL = getenv('WEB_APP_URL', 'http://localhost:3000')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'developer.askit@gmail.com'
-EMAIL_HOST_PASSWORD = '@sKitd3v'
-EMAIL_FROM_NAME = 'Ask IT'
+EMAIL_HOST_USER = 'no-reply@askitcapstone.live'
+EMAIL_HOST_PASSWORD = 'eea564c11b0a631bcf0fabe2e0a7e6e4-78651cec-2ff6bc94'
+EMAIL_FROM_NAME = 'no-reply@askitcapstone.live'
 
 
 # Application definition
@@ -99,9 +99,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'capstone_dev',
-        'USER': 'root',
-        'PASSWORD': 'ubiquity1',
-        'HOST': '127.0.0.1',
+        'USER': 'lendl',
+        'PASSWORD': 'L3ndlc12!',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
@@ -189,3 +189,13 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://askit-admin-v2.vercel.
 # CAPSTONE DEV EMAIL ACCOUNT
 # email: developer.askit@gmail.com
 # password: @sKitd3v
+
+# twillio password: askitcapstonetwilli0
+
+# AWS MySQL CREDENTIALS
+# user: 'lendl',
+# password: 'ubiquity1'
+
+# LOCAL MySQL CREDENTIALS
+# user: 'lendl',
+# password: 'L3ndlc12!'
