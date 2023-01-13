@@ -100,7 +100,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         
         if not user.reset_pw_code and not user.reset_pw_exp:
             raise serializers.ValidationError({'code': 'no existing code, please request a new one'})
-        elif user.reset_pw_code == data.get('code').upper():
+        elif user.reset_pw_code != data.get('code').upper():
             raise serializers.ValidationError({'code': 'invalid code.'})
         elif datetime.now() > user.reset_pw_exp:
             raise serializers.ValidationError({'code': 'code expired, please request a new one.'})
