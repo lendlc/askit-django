@@ -56,6 +56,7 @@ urlpatterns = [
 
    # schedule
    path('schedules/', views.ListCreateSchedule.as_view()),
+   path('schedule_list/', views.ScheduleList.as_view()),
    path('schedules/<int:pk>/', views.GetEditDeleteSchedule.as_view()),
 
    # appointment

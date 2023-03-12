@@ -298,6 +298,7 @@ class VerifyEmailToken(generics.GenericAPIView):
 @access Private
 """
 class Users(generics.ListAPIView):
+    """ added role filtering """
     permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserListSerializer
@@ -305,6 +306,9 @@ class Users(generics.ListAPIView):
     def get_queryset(self):
         qs = super().get_queryset().exclude(role="")
         user_id = self.request.GET.get('id', None)
+        role = self.request.GET.get('role', None)
         if user_id is not None:
             qs = qs.filter(id=user_id)
+        if role is not None:
+            qs = qs.filter(role=role)
         return qs
