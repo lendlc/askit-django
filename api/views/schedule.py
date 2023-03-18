@@ -39,6 +39,20 @@ class ListCreateSchedule(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(status=status.HTTP_201_CREATED)
+    
+    
+class ScheduleList(generics.ListAPIView):
+    """ public endpoint para dun sa schedules, then pwede mag query na lang using ?sub=subject_name>"""
+    permission_classes = (permissions.AllowAny, )
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.query_params.get('sub')
+        if q:
+            qs = qs.filter(subject=q)
+        return qs
 
 """
 @route  GPD /schedule/<id>/
