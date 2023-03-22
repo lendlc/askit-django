@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
-from api.models import Appointment, Tutee
+from api.models import Appointment, Schedule
 from api.serializers.AppointmentSerializer import *
 
 
@@ -45,4 +45,5 @@ class TuteeAppointment(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        Schedule.objects.filter(id=request.data.get('tutor_schedule')).update(is_available=False)
         return Response(status=status.HTTP_201_CREATED)

@@ -14,7 +14,12 @@ class AdminAppointmentSerializer(serializers.ModelSerializer):
         
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    tutor_id = serializers.ReadOnlyField(source='tutor_schedule.user.id')
     tutor_email = serializers.ReadOnlyField(source='tutor_schedule.user.email')
+    tutor_full_name = serializers.ReadOnlyField(source='tutor_schedule.user.get_full_name')
+    tutee_id = serializers.ReadOnlyField(source='tutee.user.id')
+    tutee_full_name = serializers.ReadOnlyField(source='tutee.user.get_full_name')
+    subject = serializers.ReadOnlyField(source='tutor_schedule.subject')
     start = serializers.ReadOnlyField(source='tutor_schedule.datetime_start')
     end = serializers.ReadOnlyField(source='tutor_schedule.datetime_end')
     
@@ -22,6 +27,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = ('__all__')
         read_only_fields = ['tutee']
-        
+
     
 
