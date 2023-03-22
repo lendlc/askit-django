@@ -61,6 +61,8 @@ urlpatterns = [
 
    # appointment
    path('tutee/appointments/', views.TuteeAppointment.as_view()),
+   
+   path('tutors/', views.Tutors.as_view())
    #  path('/tutee/appointments/<int:pk>/', views.GetEditDeleteAppointment()),
 
 ]
