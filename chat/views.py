@@ -15,8 +15,18 @@ class ConvoSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         user = self.context['request'].user
+        
+        if user.role == 'tutee':
+            chat_with = instance.tutor.user.get_full_name()
+            chat_with_id = instance.tutor.user.id
+        else:
+            chat_with = instance.tutee.user.get_full_name()
+            chat_with_id = instance.tutee.user.id
 
-        data['chat_with'] = instance.tutor.user.first_name if user.role == 'tutee' else instance.tutee.user.first_name
+        data.update({
+            'chat_with': chat_with,
+            'chat_with_id': chat_with_id
+        })
 
         # get last chat data
         try:
@@ -25,7 +35,7 @@ class ConvoSerializer(serializers.ModelSerializer):
             msg = MessageSerializer(instance=qs, context={
                                     "request": self.context['request']}).data
         except Exception:
-            msg = dict()
+            msg = None
 
         data['last_message'] = msg
 
@@ -44,10 +54,10 @@ class MessageSerializer(serializers.ModelSerializer):
         req_user = self.context['request'].user
         data['current_user'] = True if req_user == instance.user else False
         return data
-    
+
 
 class CreateConvoSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Conversation
         fields = ('__all__')
@@ -58,6 +68,18 @@ class ConversationCreate(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = CreateConvoSerializer
     queryset = Conversation.objects.all()
+
+    def post(self, request):
+        appointment = request.data.get('appointment')
+
+        if appointment:
+            try:
+                Conversation.objects.get(appointment=appointment)
+                return Response(status=200)
+            except Exception:
+                pass
+        
+        return super().post(request)
 
 
 class GetConservation(generics.GenericAPIView):
@@ -87,23 +109,24 @@ class GetMessages(generics.GenericAPIView):
         msg = MessageSerializer(qs, many=True, context={"request": request})
 
         data = {
-            "convsersation_data": cnv,
+            "conversation_data": cnv,
             "messages": msg.data
         }
 
         return Response(data, status=status.HTTP_200_OK)
-    
+
 
 class SendMessage(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request):
-        
+
         convo = get_object_or_404(Conversation, id=request.data.get('conversation'))
-        
+
         Message.objects.create(
             conversation=convo,
             user=request.user,
             message=request.data.get('message')
         )
-        
+
         return Response(status=201)
