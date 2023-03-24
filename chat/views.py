@@ -44,9 +44,22 @@ class MessageSerializer(serializers.ModelSerializer):
         req_user = self.context['request'].user
         data['current_user'] = True if req_user == instance.user else False
         return data
+    
+
+class CreateConvoSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Conversation
+        fields = ('__all__')
 
 
 # Create your views here.
+class ConversationCreate(generics.CreateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = CreateConvoSerializer
+    queryset = Conversation.objects.all()
+
+
 class GetConservation(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 

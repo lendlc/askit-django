@@ -299,7 +299,7 @@ class VerifyEmailToken(generics.GenericAPIView):
 """
 class Users(generics.ListAPIView):
     """ added role filtering """
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     queryset = User.objects.all()
     serializer_class = UserListSerializer
 
@@ -312,3 +312,8 @@ class Users(generics.ListAPIView):
         if role is not None:
             qs = qs.filter(role=role)
         return qs
+
+class Tutors(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = User.objects.all().filter(role='tutor')
+    serializer_class = UserListSerializer
