@@ -3,6 +3,7 @@ from rest_framework import generics, permissions, status, serializers
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
+from api.models import Tutee, Tutor, Appointment
 from chat.models import Conversation, Message
 
 
@@ -74,12 +75,24 @@ class ConversationCreate(generics.CreateAPIView):
 
         if appointment:
             try:
-                Conversation.objects.get(appointment=appointment)
-                return Response(status=200)
+                conversation = Conversation.objects.get(appointment=appointment)
+                convo = ConvoSerializer(conversation, context={"request": request})
+                return Response(convo.data, status=200)
             except Exception:
                 pass
-        
-        return super().post(request)
+
+        tutee = get_object_or_404(Tutee, user=request.data.get('tutee'))
+        tutor = get_object_or_404(Tutor, user=request.data.get('tutor'))
+        appointment = get_object_or_404(Appointment, id=appointment)
+
+        conversation = Conversation.objects.create(
+            tutee=tutee,
+            tutor=tutor,
+            appointment=appointment
+        )
+
+        convo = ConvoSerializer(conversation, context={"request": request})
+        return Response(convo.data, status=201)
 
 
 class GetConservation(generics.GenericAPIView):

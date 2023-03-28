@@ -99,12 +99,20 @@ WSGI_APPLICATION = 'askit.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'capstone_dev',
+    #     'USER': 'lendl',
+    #     'PASSWORD': 'L3ndlc12!',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'capstone_dev',
-        'USER': 'lendl',
-        'PASSWORD': 'L3ndlc12!',
-        'HOST': 'localhost',
+        'NAME': 'askit_db',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
