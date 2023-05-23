@@ -30,7 +30,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*', '18.143.163.129',
                  'ec2-18-143-163-129.ap-southeast-1.compute.amazonaws.com', 'https://www.askitcapstone.live']
 
-twillio_password = ["eea564c11b0a631bc", "f0fabe2e0a7e6e4-", "78651cec-2ff6bc94"] 
+twillio_password = ["eea564c11b0a631bc",
+                    "f0fabe2e0a7e6e4-", "78651cec-2ff6bc94"]
 
 WEB_APP_URL = getenv('WEB_APP_URL', 'http://localhost:3000')
 
@@ -46,7 +47,7 @@ EMAIL_FROM_NAME = 'no-reply@askitcapstone.live'
 # Application definition
 
 INSTALLED_APPS = [
-    'django_light', # disable darkmode
+    'django_light',  # disable darkmode
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -182,7 +183,8 @@ APPEND_SLASH = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://askit-admin-v2.vercel.app"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
+                        "https://askit-admin-v2.vercel.app", "askit-web.vercel.app", "askit-web-lendlc.vercel.app"]
 
 
 ####################################################
