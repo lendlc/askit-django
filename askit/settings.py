@@ -184,7 +184,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
-                        "https://askit-admin-v2.vercel.app", "askit-web.vercel.app", "askit-web-lendlc.vercel.app"]
+                        "https://askit-admin-v2.vercel.app", "https://askit-web.vercel.app", "https://askit-web-lendlc.vercel.app"]
 
 
 ####################################################
